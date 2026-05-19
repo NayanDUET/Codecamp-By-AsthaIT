@@ -5,17 +5,18 @@ class Program2
     public void datatype() 
     {
         
-        int num1 = 5;
-        int num2 = 6;
+        int myNum = 5;               
 
-        double three = 3.24;
-        double four = 5.321;
+        double myDoubleNum = 5.99D;  
 
-        string firstname = "Nayan ";
-        string lastname  = "Chandra";
+        char myLetter = 'D';         
 
-        Console.WriteLine(num1+num2);
-        Console.WriteLine(three*four);
-        Console.WriteLine(firstname+firstname);
+        bool myBool = true;          
+
+        string myText = "Hello";     
+
+        Console.WriteLine(myLetter);
+        Console.WriteLine(myText);
+        Console.WriteLine(myDoubleNum);
     }
 }
