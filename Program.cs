@@ -2,9 +2,10 @@
 
 class Program 
 {
-    static void Main(string[] args) 
+    static void Main() 
     {
-        
-        Console.WriteLine("Hello World!"); 
+
+        Program2 p = new Program2();
+        p.datatype();
     }
 }
