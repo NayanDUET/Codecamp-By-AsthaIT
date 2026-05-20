@@ -234,14 +234,14 @@ namespace FareEngineAssessment
             
                
                 Passenger passenger =
-                    new Passenger("DTT-154", "Nayan Chandra");
+                    new Passenger("IEDL-2117", "Boktiar");
 
                
                 Vehicle standardCar =
-                    new StandardCar("DKIEK-5484544", 60m);
+                    new StandardCar("EIKLD-5484544", 60m);
 
                 Vehicle luxurySedan =
-                    new LuxurySedan("KJDLJI-9884651", 110m, 30m);
+                    new LuxurySedan("KJDLJI-9884651", 112m, 30m);
 
               
                 IPromotion percentagePromo =
@@ -257,15 +257,13 @@ namespace FareEngineAssessment
                 Trip trip1 = new Trip(
                     standardCar,
                     passenger,
-                    10,
-                    20,
+                    40,
+                    50,
                     percentagePromo
                 );
 
                 decimal fare1 = trip1.CalculateFinalFare();
 
-                Console.WriteLine("STANDARD CAR.......");
-                Console.WriteLine($"Final Fare: {fare1}");
 
                 trip1.CompleteTrip(paymentService);
 
@@ -284,7 +282,6 @@ namespace FareEngineAssessment
                 decimal fare2 = trip2.CalculateFinalFare();
 
                 Console.WriteLine("LUXURY SEDAN.......");
-                Console.WriteLine($"Final Fare: {fare2}");
 
                 trip2.CompleteTrip(paymentService);
 
