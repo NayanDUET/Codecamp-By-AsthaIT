@@ -1,0 +1,15 @@
+D:\BS23\bin\Debug\net8.0\BS23.exe
+D:\BS23\bin\Debug\net8.0\BS23.deps.json
+D:\BS23\bin\Debug\net8.0\BS23.runtimeconfig.json
+D:\BS23\bin\Debug\net8.0\BS23.dll
+D:\BS23\bin\Debug\net8.0\BS23.pdb
+D:\BS23\obj\Debug\net8.0\BS23.GeneratedMSBuildEditorConfig.editorconfig
+D:\BS23\obj\Debug\net8.0\BS23.AssemblyInfoInputs.cache
+D:\BS23\obj\Debug\net8.0\BS23.AssemblyInfo.cs
+D:\BS23\obj\Debug\net8.0\BS23.csproj.CoreCompileInputs.cache
+D:\BS23\obj\Debug\net8.0\BS23.dll
+D:\BS23\obj\Debug\net8.0\refint\BS23.dll
+D:\BS23\obj\Debug\net8.0\BS23.pdb
+D:\BS23\obj\Debug\net8.0\BS23.genruntimeconfig.cache
+D:\BS23\obj\Debug\net8.0\ref\BS23.dll
+D:\BS23\obj\Debug\net8.0\BS23.sourcelink.json
