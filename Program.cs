@@ -6,14 +6,51 @@ using Microsoft.Extensions.DependencyInjection;
 
 //register
 var service = new ServiceCollection();
-service.AddTransient<NotificationService>();
 
-service.AddTransient<IEmialService,EmailService>();
+service.AddTransient<ITransientService,TransientService>();
+service.AddScoped<IScopedService,ScopedService>();
+service.AddSingleton<ISingletonService,SingletonService>();
 
 var serviceProvider = service.BuildServiceProvider();
 
+//resolve
+var tansientservice1 = serviceProvider.GetRequiredService<ITransientService>();
+Console.WriteLine($"Transiant service ID: {tansientservice1.Id}");
 
-//var nofication = ObjectFactory<NotificationService>.Get();
+var tansientservice2 = serviceProvider.GetRequiredService<ITransientService>();
+Console.WriteLine($"Transiant service ID: {tansientservice2.Id}");
 
-var nofication = serviceProvider.GetRequiredService<NotificationService>();
-nofication.Notify();
+Console.WriteLine();
+
+var singleTonservice1 = serviceProvider.GetRequiredService<ISingletonService>();
+Console.WriteLine($"Transiant service ID: {singleTonservice1.Id}");
+
+var singleTonservice2 = serviceProvider.GetRequiredService<ISingletonService>();
+Console.WriteLine($"ingletonService ID: {singleTonservice2.Id}");
+
+var singleTonservice3 = serviceProvider.GetRequiredService<ISingletonService>();
+Console.WriteLine($"ingletonService ID: {singleTonservice3.Id}");
+
+Console.WriteLine();
+
+using ( var scope = serviceProvider.CreateScope())
+{
+    var scopeService1 = scope.ServiceProvider.GetRequiredService<IScopedService>();
+    Console.WriteLine($"ScopedService ID: {scopeService1.Id}");
+
+    var scopeService2 = scope.ServiceProvider.GetRequiredService<IScopedService>();
+    Console.WriteLine($"ScopedService ID: {scopeService2.Id}");
+
+}
+
+Console.WriteLine();
+
+using ( var scope = serviceProvider.CreateScope())
+{
+    var scopeService1 = scope.ServiceProvider.GetRequiredService<IScopedService>();
+    Console.WriteLine($"ScopedService ID: {scopeService1.Id}");
+
+    var scopeService2 = scope.ServiceProvider.GetRequiredService<IScopedService>();
+    Console.WriteLine($"ScopedService ID: {scopeService2.Id}");
+
+}
