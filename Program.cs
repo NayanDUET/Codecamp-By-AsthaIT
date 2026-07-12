@@ -54,3 +54,18 @@ using ( var scope = serviceProvider.CreateScope())
     Console.WriteLine($"ScopedService ID: {scopeService2.Id}");
 
 }
+
+Console.WriteLine("Test Singleton Service");
+
+//register
+var customservice = new CustomServiceCollection();
+
+customservice.AddSingleton<ISingletonService,SingletonService>();
+
+var customServiceProvider = customservice.BuildServiceProvider();
+
+var customServiceProvider1 = serviceProvider.GetRequiredService<ISingletonService>();
+Console.WriteLine($"Transiant service ID: {customServiceProvider1.Id}");
+
+var customServiceProvider2 = serviceProvider.GetRequiredService<ISingletonService>();
+Console.WriteLine($"ingletonService ID: {customServiceProvider2.Id}");
