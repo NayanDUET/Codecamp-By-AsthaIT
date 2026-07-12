@@ -1,5 +1,5 @@
 ﻿using DI;
 
 
-var nofication = ObjectFactory<NotificationService>.Get("Notification-service");
+var nofication = ObjectFactory<NotificationService>.Get();
 nofication.Notify();
