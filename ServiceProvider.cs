@@ -1,3 +1,4 @@
+using System.Net.NetworkInformation;
 using ID;
 
 namespace DI;
@@ -5,8 +6,6 @@ namespace DI;
 public class ServiceProvider
 {
     private readonly IReadOnlyList<ServiceDescriptor> _services;
-
-    private readonly Dictionary<Type, object> _singletonInstances = new();
 
     public ServiceProvider(IReadOnlyList<ServiceDescriptor> services)
     {
@@ -21,51 +20,27 @@ public class ServiceProvider
     public object GetService(Type serviceType)
     {
         
-        var descriptor = _services.FirstOrDefault(x => x.Servicetype == serviceType);
+        var descriptor = _services.FirstOrDefault(x=>x.Servicetype == serviceType) ?? throw new Exception($"Service of type {serviceType.Name } is not registrered");
 
-        if (descriptor == null)
-            throw new Exception($"Service {serviceType.Name} is not registered.");
-
-        switch (descriptor.LifeTime)
-        {
-            case ServiceLifeTime.Singleton:
-
-                if (_singletonInstances.TryGetValue(serviceType, out var instance))
-                    return instance;
-
-                instance = CreateInstance(descriptor.Implementationtype);
-
-                _singletonInstances[serviceType] = instance;
-
-                return instance;
-
-            case ServiceLifeTime.Transiant:
-
-                return CreateInstance(descriptor.Implementationtype);
-
-            default:
-                throw new NotImplementedException("Scoped is not implemented.");
-        }
+        return descriptor.LifeTime switch{
+            
+                  ServiceLifeTime.Transiant => CreateInstance(descriptor.Implementationtype),ServiceLifeTime=>throw new NotImplementedException()
+        };
     }
 
     private object CreateInstance(Type implementationType)
     {
-        var constructor = implementationType.GetConstructors().First();
+       var ctor = implementationType.GetConstructors();
+       var firstConstractor = ctor.FirstOrDefault()
+        ?? throw new Exception($"No public constructior is foud this type {implementationType.Name}");
 
-        var parameters = constructor.GetParameters();
+        var depts = firstConstractor.GetParameters()
+                     .Select(p=>GetService(p.ParameterType))
+                     .ToArray();
 
-        if (parameters.Length == 0)
-        {
-            return Activator.CreateInstance(implementationType)!;
-        }
+        
+        return Activator.CreateInstance(implementationType,depts);
 
-        var dependencies = new object[parameters.Length];
 
-        for (int i = 0; i < parameters.Length; i++)
-        {
-            dependencies[i] = GetService(parameters[i].ParameterType);
-        }
-
-        return Activator.CreateInstance(implementationType, dependencies)!;
     }
 }
