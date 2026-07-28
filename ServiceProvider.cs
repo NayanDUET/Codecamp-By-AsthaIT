@@ -24,8 +24,25 @@ public class ServiceProvider
 
         return descriptor.LifeTime switch{
             
-                  ServiceLifeTime.Transiant => CreateInstance(descriptor.Implementationtype),ServiceLifeTime=>throw new NotImplementedException()
+                  ServiceLifeTime.Transiant => CreateInstance(descriptor.Implementationtype),
+                  ServiceLifeTime.Singleton => CreateSingleTonInstance(descriptor),
+                  _=>throw new NotImplementedException()
         };
+    }
+
+    public object CreateSingleTonInstance(ServiceDescriptor descriptor)
+    {
+        
+        //if(descriptor.SingletonInstance == null)
+        //{
+            
+           ///  var instance = CreateInstance(descriptor.Implementationtype);
+           //  descriptor.SingletonInstance = instance;
+      //  }
+
+        descriptor.SingletonInstance ??=CreateInstance(descriptor.Implementationtype);
+         
+         return descriptor.SingletonInstance;
     }
 
     private object CreateInstance(Type implementationType)
