@@ -32,17 +32,15 @@ public class ServiceProvider
 
     public object CreateSingleTonInstance(ServiceDescriptor descriptor)
     {
-        
-        //if(descriptor.SingletonInstance == null)
-        //{
-            
-           ///  var instance = CreateInstance(descriptor.Implementationtype);
-           //  descriptor.SingletonInstance = instance;
-      //  }
 
-        descriptor.SingletonInstance ??=CreateInstance(descriptor.Implementationtype);
+
+        lock (descriptor.SingletonLock)
+        {
+             descriptor.SingletonInstance ??=CreateInstance(descriptor.Implementationtype);
          
-         return descriptor.SingletonInstance;
+            return descriptor.SingletonInstance;
+        }
+       
     }
 
     private object CreateInstance(Type implementationType)

@@ -16,4 +16,6 @@ public class ServiceDescriptor(Type servicetype,Type implementationtype,ServiceL
     public ServiceLifeTime LifeTime {get;} = lifeTime;
 
     public object ? SingletonInstance {get;set;}
+
+    public object SingletonLock {get;set;}
 }
