@@ -6,10 +6,21 @@ namespace DI;
 public class ServiceProvider
 {
     private readonly IReadOnlyList<ServiceDescriptor> _services;
+    private readonly Dictionary<Type,Object>? _scopeCache;
 
     public ServiceProvider(IReadOnlyList<ServiceDescriptor> services)
     {
         _services = services;
+    }
+
+     public ServiceProvider(IReadOnlyList<ServiceDescriptor> services,bool isScope)
+    {
+        _services = services;
+
+        if(isScope)
+        {
+            _scopeCache = [];
+        }
     }
 
     public T GetService<T>()
@@ -26,8 +37,15 @@ public class ServiceProvider
             
                   ServiceLifeTime.Transiant => CreateInstance(descriptor.Implementationtype),
                   ServiceLifeTime.Singleton => CreateSingleTonInstance(descriptor),
+                  ServiceLifeTime.Scoped => CreateScopedInstance(descriptor),
                   _=>throw new NotImplementedException()
         };
+    }
+
+    public ServiceScope CreateScope()
+    {
+        var scopePorvider = new ServiceProvider(_services,true);
+        return new ServiceScope(scopePorvider);
     }
 
     public object CreateSingleTonInstance(ServiceDescriptor descriptor)
@@ -41,6 +59,19 @@ public class ServiceProvider
             return descriptor.SingletonInstance;
         }
        
+    }
+
+    public object CreateScopedInstance(ServiceDescriptor descriptor)
+    {
+        if(_scopeCache == null) 
+          throw new InvalidOperationException("Can not resolve service  from root provider");
+
+        if(_scopeCache.TryGetValue(descriptor.Servicetype, out var instance)) return instance;
+
+        instance = CreateInstance(descriptor.Implementationtype);
+
+        _scopeCache[descriptor.Servicetype] = instance;
+        return instance;
     }
 
     private object CreateInstance(Type implementationType)
@@ -57,5 +88,20 @@ public class ServiceProvider
         return Activator.CreateInstance(implementationType,depts);
 
 
+    }
+
+    internal void DisposeScopedInstance()
+    {
+        if(_scopeCache == null) return;
+
+        foreach(var instance in _scopeCache.Values)
+        {
+            if(instance is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
+        }
+
+        _scopeCache.Clear();
     }
 }
