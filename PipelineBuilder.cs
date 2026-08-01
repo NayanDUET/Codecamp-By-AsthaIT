@@ -16,7 +16,7 @@ public class PipelineBuilder
 
     public Func<HttpContext , Task> Build()
     {
-        Func<HttpContext,Task> pipeline = (context) =>
+        Func<HttpContext,Task> EndNode = (context) =>
         {
              Console.WriteLine("End");
              return Task.CompletedTask;
@@ -26,12 +26,12 @@ public class PipelineBuilder
         {
             
             var current = _middleware[i];
-            var next = pipeline;
-            pipeline = ctx => current(ctx,next);
+            var next = EndNode;
+            EndNode = ctx => current(ctx,next);
 
         }
 
-        return pipeline;
+        return EndNode;
 
     }
 
