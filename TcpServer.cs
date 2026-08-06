@@ -15,18 +15,20 @@ public class TcpServer
     }
 
     public async Task StartAsync()
-    {
-        
-         var listener = new TcpListener(IPAddress.Any,_port);
-         listener.Start();
+     {
+     var listener = new TcpListener(IPAddress.Any, _port);
+     listener.Start();
 
-        while (true)
-        {
-            var clint = await listener.AcceptTcpClientAsync();
-        }
-    }
+     Console.WriteLine($"Server started on port {_port}");
 
-    private async Task HandleClint(TcpClient client)
+     while (true)
+     {
+          var client = await listener.AcceptTcpClientAsync();
+          _ = Task.Run(() => HandleClient(client));
+     }
+     }
+
+    private async Task HandleClient(TcpClient client)
     {
         
          using var stream = client.GetStream();
